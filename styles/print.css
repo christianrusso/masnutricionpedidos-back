@@ -1,0 +1,8 @@
+@media print {
+    html{
+      padding-bottom: 2rem;
+      margin-bottom: 2rem;
+      zoom: 100%;
+      height: 24cm;
+    }
+}
