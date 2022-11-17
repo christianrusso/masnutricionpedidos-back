@@ -1,12 +1,14 @@
 const express = require('express');
 const conexion = require('../database');
 const router = express.Router();
+const { format } = require('date-fns');
 
 router.post('/crear', async (req, res, next) => {
-  const {descripcion, fechaGraba,usuarioGraba } = req.body;
+  const {descripcion, usuarioGraba } = req.body;
+  const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
   conexion.query(
     'INSERT INTO tipocondicionesdeventa (descripcion, fechaGraba,usuarioGraba) VALUES (?,?,?); ',
-    [descripcion, fechaGraba,usuarioGraba],
+    [descripcion, fechaCambiada,usuarioGraba],
     (error, rows) => {
       if (error) {
         console.log(error);
@@ -27,8 +29,8 @@ router.get('', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  const { idTipoCondicionesDeVenta } = req.params;
-  conexion.query('SELECT * FROM tipocondicionesdeventa WHERE idTipoCondicionesDeVenta = ?', [idTipoCondicionesDeVenta], (err, rows, fields) => {
+  const { id } = req.params;
+  conexion.query('SELECT * FROM tipocondicionesdeventa WHERE idTipoCondicionesDeVenta = ?', [id], (err, rows, fields) => {
     if (!err) {
       res.json(rows);
     } else {
@@ -38,11 +40,12 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.put('/:id', (req, res) => {
-  const { idTipoCondicionesDeVenta } = req.params;
-  const { descripcion, fechaModifica,usuarioModifica } = req.body;
+  const { id } = req.params;
+  const { descripcion, usuarioGraba, usuarioModifica } = req.body;
+  const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
   conexion.query(
-    'UPDATE tipocondicionesdeventa SET descripcion = ?, idTipoProducto = ?,idTipoFamiliaProducto = ?,unidadesFijasPallet = ?,porcRelacionPallet = ?,precioReferencia = ?, fechaModifica = ?, usuarioModifica = ? WHERE idTipoCondicionesDeVenta = ?',
-    [descripcion, fechaModifica,usuarioModifica, idTipoCondicionesDeVenta],
+    'UPDATE tipocondicionesdeventa SET descripcion = ?, usuarioGraba = ?,fechaModifica = ?, usuarioModifica = ? WHERE idTipoCondicionesDeVenta = ?',
+    [descripcion, usuarioGraba, fechaCambiada,usuarioModifica, id],
     (err, rows, fields) => {
       if (!err) {
         res.json({ Status: 'Tipo Condiciones Venta Actualizado' });
@@ -54,8 +57,8 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  const { idTipoCondicionesDeVenta } = req.params;
-  conexion.query('DELETE FROM tipocondicionesdeventa WHERE idTipoCondicionesDeVenta = ?', [idTipoCondicionesDeVenta], (err, rows, fields) => {
+  const { id } = req.params;
+  conexion.query('DELETE FROM tipocondicionesdeventa WHERE idTipoCondicionesDeVenta = ?', [id], (err, rows, fields) => {
     if (!err) {
       res.json({ Status: 'Tipo Condiciones de Venta eliminado' });
     } else {
