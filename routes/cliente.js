@@ -1,15 +1,18 @@
 const express = require('express');
 const conexion = require('../database');
 const router = express.Router();
+const { format } = require('date-fns');
 
 
 
 
 router.post('/crear', async (req, res, next) => {
-  const { Descripcion, fechaGraba, usuarioGraba} = req.body;
+  console.log(req.body);
+  const {Descripcion,usuarioGraba } = req.body;
+  const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
   conexion.query(
-    'INSERT INTO tipocliente (Descripcion, fechaGraba, usuarioGraba) VALUES (?, ?, ?); ',
-    [Descripcion, fechaGraba, usuarioGraba],
+    'INSERT INTO tipocliente (Descripcion, fechaGraba,usuarioGraba) VALUES (?,?,?); ',
+    [Descripcion, fechaCambiada, usuarioGraba],
     (error, rows) => {
       if (error) {
         console.log(error);
@@ -20,8 +23,8 @@ router.post('/crear', async (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  const { idTipoCliente  } = req.params;
-  conexion.query('SELECT * FROM tipocliente WHERE idTipoCliente  = ?', [idTipoCliente ], (err, rows, fields) => {
+  const { id  } = req.params;
+  conexion.query('SELECT * FROM tipocliente WHERE idTipoCliente  = ?', [id ], (err, rows, fields) => {
     if (!err) {
       res.json(rows);
     } else {
@@ -41,11 +44,11 @@ router.get('', (req, res, next) => {
 });
 
 router.put('/:id', (req, res) => {
-  const { idTipoCliente  } = req.params;
-  const { Descripcion, fechaModifica, usuarioModifica} = req.body;
+  const { id  } = req.params;
+  const { Descripcion, usuarioGraba,fechaModifica, usuarioModifica} = req.body;
   conexion.query(
-    'UPDATE tipocliente SET Descripcion = ?, fechaModifica = ?, usuarioModifica = ? WHERE idTipoCliente = ?',
-    [Descripcion, fechaModifica, usuarioModifica, idTipoCliente ],
+    'UPDATE tipocliente SET Descripcion = ?, usuarioGraba = ?, fechaModifica = ?, usuarioModifica = ? WHERE idTipoCliente = ?',
+    [Descripcion,usuarioGraba, fechaModifica, usuarioModifica, id ],
     (err, rows, fields) => {
       if (!err) {
         res.json({ Status: 'Tipo Cliente Actualizado' });
@@ -57,8 +60,8 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  const { idTipoCliente } = req.params;
-  conexion.query('DELETE FROM tipocliente WHERE idTipoCliente = ?', [idTipoCliente], (err, rows, fields) => {
+  const { id } = req.params;
+  conexion.query('DELETE FROM tipocliente WHERE idTipoCliente = ?', [id], (err, rows, fields) => {
     if (!err) {
       res.json({ Status: 'Tipo Cliente eliminado' });
     } else {

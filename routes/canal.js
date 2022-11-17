@@ -4,7 +4,6 @@ const router = express.Router();
 const { format } = require('date-fns');
 
 router.post('/crear', async (req, res, next) => {
-  console.log("ghasfdasdf");
   console.log(req.body);
   const {Descripcion,usuarioGraba } = req.body;
   const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
