@@ -41,10 +41,10 @@ router.get('/:id', (req, res, next) => {
 
 router.put('/:id', (req, res) => {
   const { id } = req.params;
-  const { Descripcion, DescBreve, fechaModifica, usuarioModifica } = req.body;
+  const { Descripcion, DescBreve, fechaModifica, usuarioModifica, usuarioGraba } = req.body;
   conexion.query(
-    'UPDATE  tipoiva SET Descripcion = ?, DescBreve = ?, fechaModifica = ?, usuarioModifica = ? WHERE idTipoIVA = ?',
-    [Descripcion, DescBreve, fechaModifica, usuarioModifica, id],
+    'UPDATE  tipoiva SET Descripcion = ?, DescBreve = ?, usuarioGraba = ?, fechaModifica = ?, usuarioModifica = ? WHERE idTipoIVA = ?',
+    [Descripcion, DescBreve,usuarioGraba, fechaModifica, usuarioModifica, id],
     (err, rows, fields) => {
       if (!err) {
         res.json({ Status: 'Tipo IVA Actualizado' });
