@@ -1,12 +1,14 @@
 const express = require('express');
 const conexion = require('../database');
 const router = express.Router();
+const { format } = require('date-fns');
 
 router.post('/crear', async (req, res, next) => {
-  const {Descripcion,DescBreve, fechaGraba,usuarioGraba } = req.body;
+  const { Descripcion, DescBreve, usuarioGraba } = req.body;
+  const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
   conexion.query(
     'INSERT INTO tipoiva (Descripcion,DescBreve, fechaGraba,usuarioGraba ) VALUES (?,?,?,?); ',
-    [Descripcion,DescBreve, fechaGraba,usuarioGraba],
+    [Descripcion, DescBreve, fechaCambiada, usuarioGraba],
     (error, rows) => {
       if (error) {
         console.log(error);
@@ -27,8 +29,8 @@ router.get('', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  const { idTipoIVA   } = req.params;
-  conexion.query('SELECT * FROM tipoiva WHERE idTipoIVA   = ?', [idTipoIVA ], (err, rows, fields) => {
+  const { id } = req.params;
+  conexion.query('SELECT * FROM tipoiva WHERE idTipoIVA   = ?', [id], (err, rows, fields) => {
     if (!err) {
       res.json(rows);
     } else {
@@ -38,11 +40,11 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.put('/:id', (req, res) => {
-  const { idTipoIVA   } = req.params;
-  const { Descripcion,DescBreve, fechaModifica,usuarioModifica } = req.body;
+  const { id } = req.params;
+  const { Descripcion, DescBreve, fechaModifica, usuarioModifica } = req.body;
   conexion.query(
     'UPDATE  tipoiva SET Descripcion = ?, DescBreve = ?, fechaModifica = ?, usuarioModifica = ? WHERE idTipoIVA = ?',
-    [ Descripcion,DescBreve, fechaModifica,usuarioModifica, idTipoIVA  ],
+    [Descripcion, DescBreve, fechaModifica, usuarioModifica, id],
     (err, rows, fields) => {
       if (!err) {
         res.json({ Status: 'Tipo IVA Actualizado' });
@@ -54,8 +56,8 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  const { idTipoIVA  } = req.params;
-  conexion.query('DELETE FROM tipoiva WHERE idTipoIVA  = ?', [idTipoIVA], (err, rows, fields) => {
+  const { id } = req.params;
+  conexion.query('DELETE FROM tipoiva WHERE idTipoIVA  = ?', [id], (err, rows, fields) => {
     if (!err) {
       res.json({ Status: 'Tipo IVA eliminado' });
     } else {
@@ -63,6 +65,5 @@ router.delete('/:id', (req, res) => {
     }
   });
 });
-
 
 module.exports = router;
