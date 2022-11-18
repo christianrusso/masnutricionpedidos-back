@@ -1,15 +1,17 @@
 const express = require('express');
 const conexion = require('../database');
 const router = express.Router();
+const { format } = require('date-fns');
 
 
 
 
 router.post('/crear', async (req, res, next) => {
-  const { Descripcion, fechaGraba, usuarioGraba} = req.body;
+  const { Descripcion, usuarioGraba} = req.body;
+  const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
   conexion.query(
     'INSERT INTO tiporeglacomercial (Descripcion, fechaGraba, usuarioGraba) VALUES (?, ?, ?); ',
-    [Descripcion, fechaGraba, usuarioGraba],
+    [Descripcion, fechaCambiada, usuarioGraba],
     (error, rows) => {
       if (error) {
         console.log(error);
@@ -20,8 +22,8 @@ router.post('/crear', async (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  const { idTipoReglaComercial    } = req.params;
-  conexion.query('SELECT * FROM tiporeglacomercial WHERE idTipoReglaComercial = ?', [idTipoReglaComercial   ], (err, rows, fields) => {
+  const { id } = req.params;
+  conexion.query('SELECT * FROM tiporeglacomercial WHERE idTipoReglaComercial = ?', [id], (err, rows, fields) => {
     if (!err) {
       res.json(rows);
     } else {
@@ -41,11 +43,11 @@ router.get('', (req, res, next) => {
 });
 
 router.put('/:id', (req, res) => {
-  const { idTipoReglaComercial } = req.params;
-  const { Descripcion, fechaModifica, usuarioModifica} = req.body;
+  const { id } = req.params;
+  const { Descripcion, fechaModifica, usuarioModifica, usuarioGraba} = req.body;
   conexion.query(
-    'UPDATE tiporeglacomercial SET Descripcion = ?, fechaModifica = ?, usuarioModifica = ? WHERE idTipoReglaComercial  = ?',
-    [Descripcion, fechaModifica, usuarioModifica, idTipoReglaComercial  ],
+    'UPDATE tiporeglacomercial SET Descripcion = ?,usuarioGraba = ? , fechaModifica = ?, usuarioModifica = ? WHERE idTipoReglaComercial  = ?',
+    [Descripcion,usuarioGraba, fechaModifica, usuarioModifica, id  ],
     (err, rows, fields) => {
       if (!err) {
         res.json({ Status: 'Tipo Regla Comercial Actualizado' });
@@ -57,8 +59,8 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  const { idTipoReglaComercial  } = req.params;
-  conexion.query('DELETE FROM tiporeglacomercial WHERE idTipoReglaComercial = ?', [idTipoReglaComercial ], (err, rows, fields) => {
+  const { id } = req.params;
+  conexion.query('DELETE FROM tiporeglacomercial WHERE idTipoReglaComercial = ?', [id], (err, rows, fields) => {
     if (!err) {
       res.json({ Status: 'Tipo Regla Comercial eliminado' });
     } else {
