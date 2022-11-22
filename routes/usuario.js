@@ -1,53 +1,80 @@
 const express = require('express');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { format } = require('date-fns');
 
 const conexion = require('../database');
 
 const router = express.Router();
 router.post('/signup', async (req, res, next) => {
-  const { email, password } = req.body;
-  const rol = 2
-  const passHash = await bcryptjs.hash(password, 10);
+  const {
+    idEmpresa,
+    idGrupoAcceso,
+    NickName,
+    Password,
+    NombreApellido,
+    CodInterno,
+    Email,
+    isAdmin,
+    isInactivo,
+    isBorrado,
+    usuarioGraba
+  } = req.body;
+  const passHash = await bcryptjs.hash(Password, 10);
+  const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
   conexion.query(
-    'INSERT INTO users (email, password, rol) VALUES (?, ?, ?); ',
-    [email, passHash, rol],
+    'INSERT INTO usuario (idEmpresa, idGrupoAcceso, NickName, Password, NombreApellido, CodInterno,Email, isAdmin, isInactivo, isBorrado, fechaGraba, usuarioGraba) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ',
+    [
+      idEmpresa,
+      idGrupoAcceso,
+      NickName,
+      passHash,
+      NombreApellido,
+      CodInterno,
+      Email,
+      isAdmin,
+      isInactivo,
+      isBorrado,
+      fechaCambiada,
+      usuarioGraba
+    ],
     (error, rows) => {
       if (error) {
         console.log(error);
       }
       res.json({ Status: 'Usuario registrado' });
-    } 
+    }
   );
 });
 
 router.post('/login', (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { NickName, Password } = req.body;
     //si no te manda email o pass
-    if (!email || !password) {
-      res.json({ Status: 'Ingrese el email y/o password' });
+    if (!NickName || !Password) {
+      res.json({ Status: 'Ingrese el email y/o password o esta inactivo' });
     } else {
-      conexion.query('SELECT * FROM users WHERE email = ?', [email], async (error, rows) => {
-        if (rows.length == 0 || !(await bcryptjs.compare(password, rows[0].password))) {
-          res.json({ Status: 'Email y/o password incorrectos' });
-        } else {
-          //inicio de sesión OK
-          const email = rows[0].email;
-          const password = rows[0].password
-          const rol = rows[0].rol;
-          // se crea el token
-          const token = jwt.sign({ email, password }, 'secret_this_should_be_longer', {
-            expiresIn: '1d'
-          });
-          res.json({
-            token,
-            expiresIn: 21600,
-            rol,
-            Status: 200
-          });
+      conexion.query(
+        'SELECT * FROM usuario WHERE NickName = ?',
+        [NickName],
+        async (error, rows) => {
+          if (rows.length == 0 || !(await bcryptjs.compare(Password, rows[0].Password))) {
+            res.json({ Status: 'Email y/o password incorrectos' });
+          } else {
+            //inicio de sesión OK
+            const email = rows[0].email;
+            const password = rows[0].password;
+            // se crea el token
+            const token = jwt.sign({ email, password }, 'secret_this_should_be_longer', {
+              expiresIn: '1d'
+            });
+            res.json({
+              token,
+              expiresIn: 21600
+            });
+          }
         }
-      });
+      );
     }
   } catch (error) {
     return res.status(401).json({
@@ -56,23 +83,8 @@ router.post('/login', (req, res, next) => {
   }
 });
 
-//NO FUNCIONA LOGOUT
-router.post('/logout', (req, res, next) => {
-  localStorage.removeItem('token');
-  sessionStorage.removeItem('token');
-  if (!token) {
-    res.status(401).json({
-      message: 'Logout failed'
-    });
-  }
-  res.status(200).json({
-    Status: 'Logout correcto'
-  });
-});
-
-
 router.get('', (req, res, next) => {
-  conexion.query('SELECT * FROM users ORDER BY id DESC', (err, rows, fields) => {
+  conexion.query('SELECT * FROM usuario ORDER BY id DESC', (err, rows, fields) => {
     if (!err) {
       res.json(rows);
     } else {
@@ -83,7 +95,7 @@ router.get('', (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
   const { id } = req.params;
-  conexion.query('SELECT * FROM users WHERE id = ?', [id], (err, rows, fields) => {
+  conexion.query('SELECT * FROM usuario WHERE idUsuario = ?', [id], (err, rows, fields) => {
     if (!err) {
       res.json(rows);
     } else {
@@ -94,7 +106,7 @@ router.get('/:id', (req, res, next) => {
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-  conexion.query('DELETE FROM users WHERE id = ?', [id], (err, rows, fields) => {
+  conexion.query('DELETE FROM usuario WHERE idUsuario = ?', [id], (err, rows, fields) => {
     if (!err) {
       res.json({ Status: 'Usuario eliminado' });
     } else {
@@ -105,11 +117,38 @@ router.delete('/:id', (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { email, password, rol } = req.body;
-  const passHash = await bcryptjs.hash(password, 10);
+  const {
+    idEmpresa,
+    idGrupoAcceso,
+    NickName,
+    Password,
+    NombreApellido,
+    CodInterno,
+    Email,
+    isAdmin,
+    isInactivo,
+    isBorrado,
+    usuarioModifica
+  } = req.body;
+  const passHash = await bcryptjs.hash(Password, 10);
+  const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
   conexion.query(
-    'UPDATE users SET email = ?, rol = ?, password=? WHERE id = ?',
-    [email, rol, passHash, id],
+    'UPDATE usuario SET idEmpresa = ?, idGrupoAcceso =? , NickName =? , Password =? , NombreApellido =? , CodInterno = ?,Email =? , isAdmin =?, isInactivo =? , isBorrado =? , fechaModifica =?, usuarioModifica =?  WHERE id = ?',
+    [
+      idEmpresa,
+      idGrupoAcceso,
+      NickName,
+      passHash,
+      NombreApellido,
+      CodInterno,
+      Email,
+      isAdmin,
+      isInactivo,
+      isBorrado,
+      fechaCambiada,
+      usuarioModifica,
+      id
+    ],
     (err, rows, fields) => {
       if (!err) {
         res.json({ Status: 'Usuario Actualizado' });
