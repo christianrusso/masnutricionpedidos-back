@@ -41,11 +41,11 @@ router.get('/:id', (req, res, next) => {
 
 router.put('/:id', (req, res) => {
   const { id  } = req.params;
-  const { descripcion,DescBreve, unidadesFijasPallet, porcRelacionPallet,usuarioModifica, usuarioGraba } = req.body;
+  const { descripcion,DescBreve, unidadesFijasPallet, porcRelacionPallet,usuarioModifica } = req.body;
   const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
   conexion.query(
-    'UPDATE tipofamiliaproducto SET descripcion = ?, DescBreve = ?, unidadesFijasPallet = ?,porcRelacionPallet = ?, usuarioGraba = ?, fechaModifica = ?, usuarioModifica = ? WHERE idTipoFamiliaProducto  = ?',
-    [ descripcion,DescBreve, unidadesFijasPallet, porcRelacionPallet,usuarioGraba, fechaCambiada,usuarioModifica, id ],
+    'UPDATE tipofamiliaproducto SET descripcion = ?, DescBreve = ?, unidadesFijasPallet = ?,porcRelacionPallet = ?, fechaModifica = ?, usuarioModifica = ? WHERE idTipoFamiliaProducto  = ?',
+    [ descripcion,DescBreve, unidadesFijasPallet, porcRelacionPallet, fechaCambiada,usuarioModifica, id ],
     (err, rows, fields) => {
       if (!err) {
         res.json({ Status: 'Tipo Familia Producto Actualizado' });

@@ -44,11 +44,11 @@ router.get('', (req, res, next) => {
 
 router.put('/:id', (req, res) => {
   const { id } = req.params;
-  const { Descripcion, usuarioModifica,  usuarioGraba } = req.body;
+  const { Descripcion, usuarioModifica } = req.body;
   const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
   conexion.query(
-    'UPDATE tipopermiso SET Descripcion = ?,  usuarioGraba = ? ,fechaModifica = ?, usuarioModifica = ? WHERE idTipoPermiso  = ?',
-    [Descripcion,  usuarioGraba ,fechaCambiada, usuarioModifica, id  ],
+    'UPDATE tipopermiso SET Descripcion = ? ,fechaModifica = ?, usuarioModifica = ? WHERE idTipoPermiso  = ?',
+    [Descripcion,fechaCambiada, usuarioModifica, id  ],
     (err, rows, fields) => {
       if (!err) {
         res.json({ Status: 'Tipo Permiso Actualizado' });

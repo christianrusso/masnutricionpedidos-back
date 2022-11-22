@@ -44,10 +44,11 @@ router.get('', (req, res, next) => {
 
 router.put('/:id', (req, res) => {
   const { id } = req.params;
-  const { Descripcion, fechaModifica, usuarioModifica, usuarioGraba} = req.body;
+  const { Descripcion, usuarioModifica} = req.body;
+  const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
   conexion.query(
-    'UPDATE tiporeglacomercial SET Descripcion = ?,usuarioGraba = ? , fechaModifica = ?, usuarioModifica = ? WHERE idTipoReglaComercial  = ?',
-    [Descripcion,usuarioGraba, fechaModifica, usuarioModifica, id  ],
+    'UPDATE tiporeglacomercial SET Descripcion = ?, fechaModifica = ?, usuarioModifica = ? WHERE idTipoReglaComercial  = ?',
+    [Descripcion, fechaCambiada, usuarioModifica, id  ],
     (err, rows, fields) => {
       if (!err) {
         res.json({ Status: 'Tipo Regla Comercial Actualizado' });

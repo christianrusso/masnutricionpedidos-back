@@ -45,10 +45,11 @@ router.get('', (req, res, next) => {
 
 router.put('/:id', (req, res) => {
   const { id  } = req.params;
-  const { Descripcion, usuarioGraba,fechaModifica, usuarioModifica} = req.body;
+  const { Descripcion, usuarioModifica} = req.body;
+  const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
   conexion.query(
-    'UPDATE tipocliente SET Descripcion = ?, usuarioGraba = ?, fechaModifica = ?, usuarioModifica = ? WHERE idTipoCliente = ?',
-    [Descripcion,usuarioGraba, fechaModifica, usuarioModifica, id ],
+    'UPDATE tipocliente SET Descripcion = ?, fechaModifica = ?, usuarioModifica = ? WHERE idTipoCliente = ?',
+    [Descripcion, fechaCambiada, usuarioModifica, id ],
     (err, rows, fields) => {
       if (!err) {
         res.json({ Status: 'Tipo Cliente Actualizado' });

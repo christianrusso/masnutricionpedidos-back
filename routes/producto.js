@@ -42,10 +42,11 @@ router.get('/:id', (req, res, next) => {
 
 router.put('/:id', (req, res) => {
   const { id   } = req.params;
-  const { descripcion,DescBreve, fechaModifica,usuarioModifica, usuarioGraba} = req.body;
+  const { descripcion,DescBreve,usuarioModifica} = req.body;
+  const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
   conexion.query(
-    'UPDATE  tipoproducto SET descripcion = ?, DescBreve = ?,usuarioGraba = ?, fechaModifica = ?, usuarioModifica = ? WHERE idTipoProducto = ?',
-    [ descripcion,DescBreve,usuarioGraba, fechaModifica,usuarioModifica, id  ],
+    'UPDATE  tipoproducto SET descripcion = ?, DescBreve = ?, fechaModifica = ?, usuarioModifica = ? WHERE idTipoProducto = ?',
+    [ descripcion,DescBreve, fechaCambiada,usuarioModifica, id  ],
     (err, rows, fields) => {
       if (!err) {
         res.json({ Status: 'Tipo Producto Actualizado' });
