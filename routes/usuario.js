@@ -62,15 +62,41 @@ router.post('/login', (req, res, next) => {
             res.json({ Status: 'Email y/o password incorrectos' });
           } else {
             //inicio de sesión OK
-            const email = rows[0].email;
-            const password = rows[0].password;
+            const idEmpresa = rows[0].idEmpresa;
+            const idUsuario = rows[0].idUsuario;
+            const idGrupoAcceso = rows[0].idGrupoAcceso;
+            const NickName = rows[0].NickName;
+            const NombreApellido = rows[0].NombreApellido;
+            const CodInterno = rows[0].CodInterno;
+            const Email = rows[0].Email;
+            const isAdmin = rows[0].isAdmin;
+            const isInactivo = rows[0].isInactivo;
+            const isBorrado = rows[0].isBorrado;
+            const fechaGraba = rows[0].fechaGraba;
+            const usuarioGraba = rows[0].usuarioGraba;
             // se crea el token
-            const token = jwt.sign({ email, password }, 'secret_this_should_be_longer', {
-              expiresIn: '1d'
-            });
+            const token = jwt.sign(
+              { NickName, NombreApellido, Email },
+              'mas_nutricion?pedidos',
+              {
+                expiresIn: '1d'
+              }
+            );
             res.json({
               token,
-              expiresIn: 21600
+              expiresIn: 21600,
+              idEmpresa,
+              idUsuario,
+              idGrupoAcceso,
+              NickName,
+              NombreApellido,
+              CodInterno,
+              Email,
+              isAdmin,
+              isInactivo,
+              isBorrado,
+              fechaGraba,
+              usuarioGraba
             });
           }
         }
