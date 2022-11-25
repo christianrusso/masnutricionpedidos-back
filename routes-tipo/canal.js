@@ -17,7 +17,7 @@ router.post('/crear', async (req, res, next) => {
   // };
   // fechaHoy = fechaHoy.toLocaleString('es-AR', options)
   // console.log(fechaHoy);
-  const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
+  const fechaCambiada = new Date();
   conexion.query(
     'INSERT INTO tipocanal (Descripcion, fechaGraba,usuarioGraba) VALUES (?,?,?); ',
     [Descripcion, fechaCambiada, usuarioGraba],

@@ -55,26 +55,36 @@ class Servidor {
   }
 
   rutas() {
-    //rutas de canal
-    this.app.use('/api/canal', require('../routes/canal'));
-    //rutas de clientes
-    this.app.use('/api/cliente', require('../routes/cliente'));
-    //rutas de condiciones de venta
-    this.app.use('/api/condiciones', require('../routes/condicionesVenta'));
-    //rutas de familia de producto
-    this.app.use('/api/familia', require('../routes/familiaProducto'));
-    //rutas de iva
-    this.app.use('/api/iva', require('../routes/iva'));
-    //rutas de permiso
-    this.app.use('/api/permiso', require('../routes/permiso'));
-    //rutas de productos
-    this.app.use('/api/producto', require('../routes/producto'));
-    //rutas de regla comercial
-    this.app.use('/api/reglaComercial', require('../routes/reglaComercial'));
-    //rutas de telefono
-    this.app.use('/api/telefono', require('../routes/telefono'));
+    //rutas de tipo canal
+    this.app.use('/api/tipo-canal', require('../routes-tipo/canal'));
+    //rutas de tipo clientes
+    this.app.use('/api/tipo-cliente', require('../routes-tipo/cliente'));
+    //rutas de tipo condiciones de venta
+    this.app.use('/api/tipo-condiciones', require('../routes-tipo/condicionesVenta'));
+    //rutas de tipo familia de producto
+    this.app.use('/api/tipo-familia', require('../routes-tipo/familiaProducto'));
+    //rutas de tipo iva
+    this.app.use('/api/tipo-iva', require('../routes-tipo/iva'));
+    //rutas de tipo permiso
+    this.app.use('/api/tipo-permiso', require('../routes-tipo/permiso'));
+    //rutas de tipo productos
+    this.app.use('/api/tipo-producto', require('../routes-tipo/producto'));
+    //rutas de tipo regla comercial
+    this.app.use('/api/tipo-reglaComercial', require('../routes-tipo/reglaComercial'));
+    //rutas de tipo telefono
+    this.app.use('/api/tipo-telefono', require('../routes-tipo/telefono'));
     //rutas de usuario
     this.app.use('/api/usuario', require('../routes/usuario'));
+    //rutas de clientes
+    this.app.use('/api/cliente', require('../routes/cliente'));
+    //rutas de empresa
+    this.app.use('/api/empresa', require('../routes/empresa'));
+    //rutas de vendedor
+    this.app.use('/api/vendedor', require('../routes/vendedor'));
+    //rutas de localidad
+    this.app.use('/api/localidad', require('../routes/localidad'));
+    //rutas de provincia
+    this.app.use('/api/provincia', require('../routes/provincia'));
   }
   listen() {
     this.app.listen(this.port, () => {
