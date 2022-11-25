@@ -7,7 +7,7 @@ const { format } = require('date-fns');
 router.get('/:id', (req, res, next) => {
     const { id } = req.params;
     conexion.query(
-      'SELECT * FROM empresa WHERE idEmpresa = ?',
+      'SELECT * FROM pedido WHERE idPedido = ?',
       [id],
       (err, rows, fields) => {
         if (!err) {
@@ -20,7 +20,7 @@ router.get('/:id', (req, res, next) => {
   });
   
 router.get('', (req, res, next) => {
-  conexion.query('SELECT * FROM empresa ORDER BY idEmpresa DESC', (err, rows, fields) => {
+  conexion.query('SELECT * FROM pedido ORDER BY idPedido DESC', (err, rows, fields) => {
     if (!err) {
       res.json(rows);
     } else {
@@ -29,15 +29,16 @@ router.get('', (req, res, next) => {
   });
 });
 
+
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
-    conexion.query('DELETE FROM empresa WHERE idEmpresa = ?', [id], (err, rows, fields) => {
+    conexion.query('DELETE FROM pedido WHERE idPedido = ?', [id], (err, rows, fields) => {
       if (!err) {
-        res.json({ Status: 'Empresa eliminada' });
+        res.json({ Status: 'Pedido eliminado' });
       } else {
         console.log(err);
       }
     });
 });
-  
+
 module.exports = router;

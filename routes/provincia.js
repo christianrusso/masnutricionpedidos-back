@@ -29,4 +29,15 @@ router.get('', (req, res, next) => {
   });
 });
 
+router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+    conexion.query('DELETE FROM provincia WHERE idProvincia = ?', [id], (err, rows, fields) => {
+      if (!err) {
+        res.json({ Status: 'Provincia eliminada' });
+      } else {
+        console.log(err);
+      }
+    });
+});
+
 module.exports = router;

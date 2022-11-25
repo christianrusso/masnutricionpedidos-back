@@ -29,4 +29,15 @@ router.get('', (req, res, next) => {
   });
 });
 
+router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+    conexion.query('DELETE FROM localidad WHERE idLocalidad = ?', [id], (err, rows, fields) => {
+      if (!err) {
+        res.json({ Status: 'Localidad eliminada' });
+      } else {
+        console.log(err);
+      }
+    });
+});
+
 module.exports = router;

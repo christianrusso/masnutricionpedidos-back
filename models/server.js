@@ -85,6 +85,8 @@ class Servidor {
     this.app.use('/api/localidad', require('../routes/localidad'));
     //rutas de provincia
     this.app.use('/api/provincia', require('../routes/provincia'));
+    //rutas de pedido
+    this.app.use('/api/pedido', require('../routes/pedido'));
   }
   listen() {
     this.app.listen(this.port, () => {
