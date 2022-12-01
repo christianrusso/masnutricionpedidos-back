@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 
 const conexion = mysql.createPool({
-  host: 'us-cdbr-east-05.cleardb.net',
+  host: 'us-cdbr-east-06.cleardb.net',
   user: 'b45d2c3c7dab74',
   password: 'fb1a5735',
   database: 'heroku_2c952474016e43f'
