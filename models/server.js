@@ -20,6 +20,7 @@ class Servidor {
     this.middlewares();
 
     //Rutas del archivo
+    this.rutasTipo();
     this.rutas();
   }
 
@@ -54,7 +55,7 @@ class Servidor {
     });
   }
 
-  rutas() {
+  rutasTipo() {
     //rutas de tipo canal
     this.app.use('/api/tipo-canal', require('../routes-tipo/canal'));
     //rutas de tipo clientes
@@ -73,6 +74,9 @@ class Servidor {
     this.app.use('/api/tipo-reglaComercial', require('../routes-tipo/reglaComercial'));
     //rutas de tipo telefono
     this.app.use('/api/tipo-telefono', require('../routes-tipo/telefono'));
+  }
+
+  rutas(){
     //rutas de usuario
     this.app.use('/api/usuario', require('../routes/usuario'));
     //rutas de clientes
@@ -87,7 +91,21 @@ class Servidor {
     this.app.use('/api/provincia', require('../routes/provincia'));
     //rutas de pedido
     this.app.use('/api/pedido', require('../routes/pedido'));
+    //rutas de acceso
+    this.app.use('/api/acceso', require('../routes/grupoAcceso'));
+    //rutas de accesoPermiso
+    this.app.use('/api/accesoPermiso', require('../routes/grupoAccesoPermiso'));
+    //rutas de telefono
+    this.app.use('/api/telefono', require('../routes/telefono'));
+    //rutas de email
+    this.app.use('/api/email', require('../routes/email'));
+    //rutas de detalleOperacion
+    this.app.use('/api/operacion', require('../routes/detalleOperacion'));
+    //rutas de detallePedido
+    this.app.use('/api/detallePedido', require('../routes/detallePedido'));
   }
+
+
   listen() {
     this.app.listen(this.port, () => {
       console.log('El servidor esta corriendo en el puerto', this.port);
