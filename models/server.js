@@ -103,6 +103,8 @@ class Servidor {
     this.app.use('/api/operacion', require('../routes/detalleOperacion'));
     //rutas de detallePedido
     this.app.use('/api/detallePedido', require('../routes/detallePedido'));
+    //rutas de producto
+    this.app.use('/api/producto', require('../routes/producto'));
   }
 
 
