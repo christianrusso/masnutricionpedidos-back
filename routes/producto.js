@@ -70,7 +70,7 @@ router.put('/:id', (req, res) => {
   } = req.body;
   const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
   conexion.query(
-    'UPDATE producto SET descripcion = ?, idTipoProducto = ?,  idTipoFamiliaProducto = ?,  unidadesFijasPallet = ?,  precioReferencia = ?, fechaModifica = ?, usuarioModifica = ? WHERE id_producto = ?',
+    'UPDATE producto SET descripcion = ?, idTipoProducto = ?,  idTipoFamiliaProducto = ?,  unidadesFijasPallet = ?, porcRelacionPallet = ?, precioReferencia = ?, fechaModifica = ?, usuarioModifica = ? WHERE id_producto = ?',
     [
       descripcion,
       idTipoProducto,
