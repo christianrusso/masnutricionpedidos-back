@@ -5,16 +5,16 @@ const { format } = require('date-fns');
 
 router.post('/crear', async (req, res, next) => {
   console.log(req.body);
-  const {idCliente,descripcion, usuarioGraba} = req.body;
+  const {idPedido,idDetallePedido,cantidad, detalle,porcDescuentoItem,precioUnitario,importe, usuarioGraba} = req.body;
   const fechaGraba = new Date();
   conexion.query(
-    'INSERT INTO email (idCliente,descripcion,fechaGraba, usuarioGraba) VALUES (?,?,?,?); ',
-    [idCliente,descripcion,fechaGraba, usuarioGraba],
+    'INSERT INTO detalleoperacion (idPedido,idDetallePedido,cantidad, detalle,porcDescuentoItem,precioUnitario,importe,fechaGraba, usuarioGraba) VALUES (?,?,?,?,?,?,?,?,?); ',
+    [idPedido,idDetallePedido,cantidad, detalle,porcDescuentoItem,precioUnitario,importe,fechaGraba, usuarioGraba],
     (error, rows) => {
       if (error) {
         console.log(error);
       }
-      res.json({ Status: 'Email creado' });
+      res.json({ Status: 'Detalle Operacion creado' });
     }
   );
 });
@@ -22,7 +22,7 @@ router.post('/crear', async (req, res, next) => {
 router.get('/:id', (req, res, next) => {
     const { id } = req.params;
     conexion.query(
-      'SELECT * FROM email WHERE idEmail = ?',
+      'SELECT * FROM detalleoperacion WHERE idOperacion = ?',
       [id],
       (err, rows, fields) => {
         if (!err) {
@@ -35,7 +35,7 @@ router.get('/:id', (req, res, next) => {
   });
   
 router.get('', (req, res, next) => {
-  conexion.query('SELECT * FROM email ORDER BY idEmail DESC', (err, rows, fields) => {
+  conexion.query('SELECT * FROM detalleoperacion ORDER BY idOperacion DESC', (err, rows, fields) => {
     if (!err) {
       res.json(rows);
     } else {
@@ -46,14 +46,14 @@ router.get('', (req, res, next) => {
 
 router.put('/:id', (req, res) => {
   const { id } = req.params;
-  const { idCliente,descripcion, usuarioModifica } = req.body;
+  const { idPedido,idDetallePedido,cantidad, detalle,porcDescuentoItem,precioUnitario,importe, usuarioModifica } = req.body;
   const fechaModifica = new Date();
   conexion.query(
-    'UPDATE email SET idCliente = ?, descripcion = ?, fechaModifica = ?, usuarioModifica = ? WHERE idEmail = ?',
-    [idCliente,descripcion,fechaModifica, usuarioModifica, id],
+    'UPDATE detalleoperacion SET idPedido = ?, idDetallePedido = ?, cantidad = ?, detalle = ?, porcDescuentoItem = ?, precioUnitario = ?, importe = ?, fechaModifica = ?, usuarioModifica = ? WHERE idOperacion = ?',
+    [idPedido,idDetallePedido,cantidad, detalle,porcDescuentoItem,precioUnitario,importe,fechaModifica, usuarioModifica, id],
     (err, rows, fields) => {
       if (!err) {
-        res.json({ Status: 'Email Actualizado' });
+        res.json({ Status: 'Detalle Operacion Actualizado' });
       } else {
         console.log(err);
       }
@@ -63,9 +63,9 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
-    conexion.query('DELETE FROM email WHERE idEmail = ?', [id], (err, rows, fields) => {
+    conexion.query('DELETE FROM detalleoperacion WHERE idOperacion = ?', [id], (err, rows, fields) => {
       if (!err) {
-        res.json({ Status: 'Email eliminado' });
+        res.json({ Status: 'Detalle Operacion eliminado' });
       } else {
         console.log(err);
       }
