@@ -43,36 +43,68 @@ router.post('/signup', async (req, res, next) => {
         console.log(error);
       }else{
         idUsuario = rows.insertId;
-        console.log(idUsuario);
-        conexion.query(
-          'INSERT INTO rol (isCliente, isDetalleOperacion, isDetallePedido, isEmail, isEmpresa, isGrupoAcceso, isGrupoAccesoPermiso, isLocalidad, isPedido, isProducto, isProvincia, isTelefono, isVendedor, idUsuario, fechaGraba, usuarioGraba) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ',
-          [
-              isCliente = 0,
-              isDetalleOperacion = 0,
-              isDetallePedido = 0,
-              isEmail = 0,
-              isEmpresa = 0,
-              isGrupoAcceso = 0,
-              isGrupoAccesoPermiso = 0,
-              isLocalidad = 0,
-              isPedido = 0,
-              isProducto = 0,
-              isProvincia = 0,
-              isTelefono = 0,
-              isVendedor = 0,
-              idUsuario = idUsuario,
-              fechaCambiada,
-              usuarioGraba
-          ],
-          (error, rows) => {
-            if (error) {
-              console.log(error);
-            }else{
-              console.log("todo listo");
+        if (isAdmin == 1) {
+          conexion.query(
+            'INSERT INTO rol (isCliente, isDetalleOperacion, isDetallePedido, isEmail, isEmpresa, isGrupoAcceso, isGrupoAccesoPermiso, isLocalidad, isPedido, isProducto, isProvincia, isTelefono, isVendedor, idUsuario, fechaGraba, usuarioGraba) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ',
+            [
+                isCliente = 1,
+                isDetalleOperacion = 1,
+                isDetallePedido = 1,
+                isEmail = 1,
+                isEmpresa = 1,
+                isGrupoAcceso = 1,
+                isGrupoAccesoPermiso = 1,
+                isLocalidad = 1,
+                isPedido = 1,
+                isProducto = 1,
+                isProvincia = 1,
+                isTelefono = 1,
+                isVendedor = 1,
+                idUsuario = idUsuario,
+                fechaCambiada,
+                usuarioGraba
+            ],
+            (error, rows) => {
+              if (error) {
+                console.log(error);
+              }else{
+                console.log("todo listo");
+              }
+              //res.json({ Status: 'Rol creado' });
             }
-            //res.json({ Status: 'Rol creado' });
-          }
-        );
+          );
+        }else{
+          conexion.query(
+            'INSERT INTO rol (isCliente, isDetalleOperacion, isDetallePedido, isEmail, isEmpresa, isGrupoAcceso, isGrupoAccesoPermiso, isLocalidad, isPedido, isProducto, isProvincia, isTelefono, isVendedor, idUsuario, fechaGraba, usuarioGraba) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ',
+            [
+                isCliente = 0,
+                isDetalleOperacion = 0,
+                isDetallePedido = 0,
+                isEmail = 0,
+                isEmpresa = 0,
+                isGrupoAcceso = 0,
+                isGrupoAccesoPermiso = 0,
+                isLocalidad = 0,
+                isPedido = 0,
+                isProducto = 0,
+                isProvincia = 0,
+                isTelefono = 0,
+                isVendedor = 0,
+                idUsuario = idUsuario,
+                fechaCambiada,
+                usuarioGraba
+            ],
+            (error, rows) => {
+              if (error) {
+                console.log(error);
+              }else{
+                console.log("todo listo");
+              }
+              //res.json({ Status: 'Rol creado' });
+            }
+          );
+        }
+        
       }
       res.json({ Status: 'Usuario registrado' });
     }

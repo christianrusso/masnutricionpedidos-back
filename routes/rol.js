@@ -53,7 +53,7 @@ router.post('/crear', async (req, res, next) => {
 router.get('/:id', (req, res, next) => {
     const { id } = req.params;
     conexion.query(
-      'SELECT * FROM rol WHERE idRol = ?',
+      'SELECT * FROM rol WHERE idUsuario = ?',
       [id],
       (err, rows, fields) => {
         if (!err) {
