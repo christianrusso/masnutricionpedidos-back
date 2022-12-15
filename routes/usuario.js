@@ -7,7 +7,7 @@ const conexion = require('../database');
 
 const router = express.Router();
 router.post('/signup', async (req, res, next) => {
-  const {
+  let {
     idEmpresa,
     idGrupoAcceso,
     NickName,
@@ -33,14 +33,46 @@ router.post('/signup', async (req, res, next) => {
       CodInterno,
       Email,
       isAdmin,
-      isInactivo,
-      isBorrado,
+      isInactivo = 0,
+      isBorrado = 0,
       fechaCambiada,
       usuarioGraba
     ],
     (error, rows) => {
       if (error) {
         console.log(error);
+      }else{
+        idUsuario = rows.insertId;
+        console.log(idUsuario);
+        conexion.query(
+          'INSERT INTO rol (isCliente, isDetalleOperacion, isDetallePedido, isEmail, isEmpresa, isGrupoAcceso, isGrupoAccesoPermiso, isLocalidad, isPedido, isProducto, isProvincia, isTelefono, isVendedor, idUsuario, fechaGraba, usuarioGraba) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ',
+          [
+              isCliente = 0,
+              isDetalleOperacion = 0,
+              isDetallePedido = 0,
+              isEmail = 0,
+              isEmpresa = 0,
+              isGrupoAcceso = 0,
+              isGrupoAccesoPermiso = 0,
+              isLocalidad = 0,
+              isPedido = 0,
+              isProducto = 0,
+              isProvincia = 0,
+              isTelefono = 0,
+              isVendedor = 0,
+              idUsuario = idUsuario,
+              fechaCambiada,
+              usuarioGraba
+          ],
+          (error, rows) => {
+            if (error) {
+              console.log(error);
+            }else{
+              console.log("todo listo");
+            }
+            //res.json({ Status: 'Rol creado' });
+          }
+        );
       }
       res.json({ Status: 'Usuario registrado' });
     }
@@ -110,7 +142,7 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('', (req, res, next) => {
-  conexion.query('SELECT * FROM usuario ORDER BY id DESC', (err, rows, fields) => {
+  conexion.query('SELECT * FROM usuario ORDER BY idUsuario DESC', (err, rows, fields) => {
     if (!err) {
       res.json(rows);
     } else {
@@ -143,7 +175,7 @@ router.delete('/:id', (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const {
+  let {
     idEmpresa,
     idGrupoAcceso,
     NickName,
@@ -159,7 +191,7 @@ router.put('/:id', async (req, res) => {
   const passHash = await bcryptjs.hash(Password, 10);
   const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
   conexion.query(
-    'UPDATE usuario SET idEmpresa = ?, idGrupoAcceso =? , NickName =? , Password =? , NombreApellido =? , CodInterno = ?,Email =? , isAdmin =?, isInactivo =? , isBorrado =? , fechaModifica =?, usuarioModifica =?  WHERE id = ?',
+    'UPDATE usuario SET idEmpresa = ?, idGrupoAcceso =? , NickName =? , Password =? , NombreApellido =? , CodInterno = ?,Email =? , isAdmin =?, isInactivo =? , isBorrado =? , fechaModifica =?, usuarioModifica =?  WHERE idUsuario = ?',
     [
       idEmpresa,
       idGrupoAcceso,
