@@ -8,7 +8,7 @@ router.post('/crear', async (req, res, next) => {
   const {descripcion, usuarioGraba} = req.body;
   const fechaGraba = new Date();
   conexion.query(
-    'INSERT INTO categoriaproducto (descripcion,fechaGraba, usuarioGraba) VALUES (?,?,?,?); ',
+    'INSERT INTO categoriaproducto (descripcion,fechaGraba, usuarioGraba) VALUES (?,?,?); ',
     [descripcion,fechaGraba, usuarioGraba],
     (error, rows) => {
       if (error) {

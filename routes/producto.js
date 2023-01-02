@@ -12,11 +12,12 @@ router.post('/crear', async (req, res, next) => {
     unidadesFijasPallet,
     porcRelacionPallet,
     precioReferencia,
+    codigo,
     usuarioGraba
   } = req.body;
   const fechaGraba = format(Date.parse(new Date()), 'yyyy-MM-dd');
   conexion.query(
-    'INSERT INTO producto (descripcion, idTipoProducto, idTipoFamiliaProducto, unidadesFijasPallet, porcRelacionPallet, precioReferencia, fechaGraba, usuarioGraba ) VALUES (?,?,?,?,?,?,?,?); ',
+    'INSERT INTO producto (descripcion, idTipoProducto, idTipoFamiliaProducto, unidadesFijasPallet, porcRelacionPallet, precioReferencia, codigo,fechaGraba, usuarioGraba ) VALUES (?,?,?,?,?,?,?,?,?); ',
     [
       descripcion,
       idTipoProducto,
@@ -24,6 +25,7 @@ router.post('/crear', async (req, res, next) => {
       unidadesFijasPallet,
       porcRelacionPallet,
       precioReferencia,
+      codigo,
       fechaGraba,
       usuarioGraba
     ],
@@ -66,11 +68,12 @@ router.put('/:id', (req, res) => {
     unidadesFijasPallet,
     porcRelacionPallet,
     precioReferencia,
+    codigo,
     usuarioModifica
   } = req.body;
   const fechaCambiada = format(Date.parse(new Date()), 'yyyy-MM-dd');
   conexion.query(
-    'UPDATE producto SET descripcion = ?, idTipoProducto = ?,  idTipoFamiliaProducto = ?,  unidadesFijasPallet = ?, porcRelacionPallet = ?, precioReferencia = ?, fechaModifica = ?, usuarioModifica = ? WHERE id_producto = ?',
+    'UPDATE producto SET descripcion = ?, idTipoProducto = ?,  idTipoFamiliaProducto = ?,  unidadesFijasPallet = ?, porcRelacionPallet = ?, precioReferencia = ?, codigo = ? ,fechaModifica = ?, usuarioModifica = ? WHERE id_producto = ?',
     [
       descripcion,
       idTipoProducto,
@@ -78,6 +81,7 @@ router.put('/:id', (req, res) => {
       unidadesFijasPallet,
       porcRelacionPallet,
       precioReferencia,
+      codigo,
       fechaCambiada,
       usuarioModifica,
       id
