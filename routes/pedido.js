@@ -36,7 +36,7 @@ router.post('/crear', async (req, res, next) => {
     ivaInscripto,
     total,
     usuarioGraba,
-  } = req.body;
+  } = req.body.pedido;
   const fechaGraba = new Date();
   conexion.query(
     'INSERT INTO pedido (isAnulado, isEnviadoxMail, isCobrado, isFinalizado, idCliente, idVendedor, idTipoReglaComercial, idAbono, idTipoCondicionesDeVenta, num_interno, representante, cod, cuit, domicilio,telefono, transporte, observaciones,  fechaPedido, porcDescuentoGeneral, descripcion, nroRemito, subtotal, impuestos, subtotal2, ivaInscriptoPorc, ivaInscripto, total, fechaGraba, usuarioGraba ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ',
@@ -75,7 +75,6 @@ router.post('/crear', async (req, res, next) => {
       if (error) {
         console.log(error);
       } else {
-        ventaCreada = rows.insertId;
         console.log(req.body.productos);
         req.body.productos.forEach(producto => {
           if (!producto.cantidad) {
@@ -93,7 +92,7 @@ router.post('/crear', async (req, res, next) => {
           );
         });
       }
-      res.json({ idVentaCreada: ventaCreada, Status: 200});
+      res.json({ idVentaCreada: rows.insertId, Status: 200});
     }
   );
 });
