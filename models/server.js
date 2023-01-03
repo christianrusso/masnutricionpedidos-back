@@ -109,6 +109,8 @@ class Servidor {
     this.app.use('/api/rol', require('../routes/rol'));
     //rutas de categoriaproducto
     this.app.use('/api/categoria', require('../routes/categoriaProducto')); 
+    //rutas de productos_por_venta
+    this.app.use('/api/productos_por_venta', require('../routes/productos_por_pedido')); 
   }
 
 

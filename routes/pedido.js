@@ -5,7 +5,8 @@ const { format } = require('date-fns');
 
 
 router.post('/crear', async (req, res, next) => {
-  console.log(req.body);
+  console.log(req.body)
+  console.log("asdfasdfasdfasdfasdfasdfasdfa");
   const { 
     isAnulado,
     isEnviadoxMail,
@@ -73,8 +74,26 @@ router.post('/crear', async (req, res, next) => {
     (error, rows) => {
       if (error) {
         console.log(error);
+      } else {
+        ventaCreada = rows.insertId;
+        console.log(req.body.productos);
+        req.body.productos.forEach(producto => {
+          if (!producto.cantidad) {
+            producto.cantidad = 1;
+          }
+          conexion.query(
+            'INSERT INTO productos_por_pedido (idPedido, idProducto, codigo, descripcion, precio, cantidad, unidades_bulto, pallets, condicion, total, usuarioGraba, fechaGraba) VALUES (?, ?,?, ?,?,?,?,?,?,?,?,?);',
+            [rows.insertId, producto.id_producto,producto.codigo, producto.descripcion, producto.precio, producto.cantidad, producto.unidadesFijasPallet, producto.porcRelacionPallet, producto.condicion, producto.total, usuarioGraba, fechaGraba],
+            (error, rows) => {
+              console.log(rows);
+              if (error) {
+                console.log(error);
+              }
+            }
+          );
+        });
       }
-      res.json({ Status: 'Pedido creado' });
+      res.json({ idVentaCreada: ventaCreada, Status: 200});
     }
   );
 });
