@@ -44,7 +44,7 @@ router.post('/crear', async (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
   const { id } = req.params;
-  conexion.query('SELECT * FROM productos_por_pedido WHERE id = ?', [id], (err, rows, fields) => {
+  conexion.query('SELECT * FROM productos_por_pedido WHERE idPedido = ?', [id], (err, rows, fields) => {
     if (!err) {
       res.json(rows);
     } else {
