@@ -192,7 +192,22 @@ router.put('/:id', (req, res) => {
     ],
     (err, rows, fields) => {
       if (!err) {
-        res.json({ Status: 'Pedido Actualizado' });
+        req.body.productos.forEach(producto => {
+          if (!producto.cantidad) {
+            producto.cantidad = 1;
+          }
+          conexion.query(
+            'UPDATE INTO productos_por_pedido idProducto =? , idCategoria =? , codigo =?, descripcion =? ,precio =? , cantidad =? , unidades_bulto =? , pallets =? , condicion =?, total =? , usuarioModifica =? , fechaModifica =? WHERE idPedido =?',
+            [ producto.id_producto,producto.idCategoria, producto.cod, producto.descripcion, producto.precio, producto.cantidad, producto.unidades_bulto, producto.pallets, producto.condicion, usuarioModifica, fechaModifica, rows.insertId],
+            (error, rows) => {
+              
+              console.log(rows);
+              if (error) {
+                console.log(error);
+              }
+            }
+          );
+        });
       } else {
         console.log(err);
       }

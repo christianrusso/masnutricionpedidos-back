@@ -9,6 +9,7 @@ router.post('/crear', async (req, res, next) => {
   const {
     idPedido,
     idProducto,
+    idCategoria,
     codigo,
     descripcion,
     precio,
@@ -21,9 +22,10 @@ router.post('/crear', async (req, res, next) => {
   } = req.body;
   const fechaGraba = new Date();
   conexion.query(
-    'INSERT INTO productos_por_pedido (idPedido,cantidad, detalle,porcDescuentoItem,precioUnitario,importe,isEntregadoItem,fechaGraba, usuarioGraba) VALUES (?,?,?,?,?,?,?,?,?); ',
+    'INSERT INTO productos_por_pedido (idPedido,idCategoria, cantidad, detalle,porcDescuentoItem,precioUnitario,importe,isEntregadoItem,fechaGraba, usuarioGraba) VALUES (?,?,?,?,?,?,?,?,?,?); ',
     [
       idPedido,
+      idCategoria,
       cantidad,
       detalle,
       porcDescuentoItem,
@@ -67,6 +69,7 @@ router.put('/:id', (req, res) => {
   const { id } = req.params;
   const {
     idPedido,
+    idCategoria,
     cantidad,
     detalle,
     porcDescuentoItem,
@@ -80,6 +83,7 @@ router.put('/:id', (req, res) => {
     'UPDATE productos_por_pedido SET idPedido = ?, cantidad = ?, detalle = ?, porcDescuentoItem = ?, precioUnitario = ?, importe = ?, isEntregadoItem = ?, fechaModifica = ?, usuarioModifica = ? WHERE id = ?',
     [
       idPedido,
+      idCategoria,
       cantidad,
       detalle,
       porcDescuentoItem,
