@@ -81,8 +81,8 @@ router.post('/crear', async (req, res, next) => {
             producto.cantidad = 1;
           }
           conexion.query(
-            'INSERT INTO productos_por_pedido (idPedido, idProducto, codigo, descripcion, precio, cantidad, unidades_bulto, pallets, condicion, total, usuarioGraba, fechaGraba) VALUES (?, ?,?, ?,?,?,?,?,?,?,?,?);',
-            [rows.insertId, producto.id_producto,producto.codigo, producto.descripcion, producto.precioReferencia, producto.cantidad, producto.unidadesFijasPallet, producto.porcRelacionPallet, producto.condicion, producto.total, usuarioGraba, fechaGraba],
+            'INSERT INTO productos_por_pedido (idPedido, idProducto,idCategoria, codigo, descripcion, precio, cantidad, unidades_bulto, pallets, condicion, total, usuarioGraba, fechaGraba) VALUES (?, ?,?, ?,?,?,?,?,?,?,?,?,?);',
+            [rows.insertId, producto.id_producto, producto.idCategoria,producto.codigo, producto.descripcion, producto.precioReferencia, producto.cantidad, producto.unidadesFijasPallet, producto.porcRelacionPallet, producto.condicion, producto.total, usuarioGraba, fechaGraba],
             (error, rows) => {
               console.log(rows);
               if (error) {
