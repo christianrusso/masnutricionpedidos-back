@@ -106,7 +106,10 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-  conexion.query('DELETE FROM productos_por_pedido WHERE id = ?', [id], (err, rows, fields) => {
+  const {
+    idProducto,
+  } = req.body;
+  conexion.query('DELETE FROM productos_por_pedido WHERE idPedido = ? AND idProducto = ?', [id, idProducto], (err, rows, fields) => {
     if (!err) {
       res.json({ Status: 'Producto por pedido eliminado' });
     } else {
