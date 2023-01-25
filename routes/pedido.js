@@ -210,11 +210,11 @@ router.put('/:id', (req, res) => {
           conexion.query(
             'UPDATE INTO productos_por_pedido idProducto =? , idCategoria =? , cod =?, descripcion =? ,precio =? , cantidad =? , unidades_bulto =? , pallets =? , condicion =?, total =? , usuarioModifica =? , fechaModifica =? WHERE idPedido =?',
             [
-              producto.id_producto,
-              producto.categoria,
-              producto.cod,
+              producto.idProducto,
+              producto.idCategoria,
+              producto.codigo,
               producto.descripcion,
-              producto.precio,
+              Number(producto.precio),
               producto.cantidad,
               producto.unidades_bulto,
               producto.pallets,
