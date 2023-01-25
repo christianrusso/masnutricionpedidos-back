@@ -18,7 +18,7 @@ router.post('/crear', async (req, res, next) => {
     idTipoCondicionesDeVenta,
     num_interno,
     representante,
-    cod,
+    codigo,
     cuit,
     domicilio,
     telefono,
@@ -38,7 +38,7 @@ router.post('/crear', async (req, res, next) => {
   } = req.body.pedido;
   const fechaGraba = new Date();
   conexion.query(
-    'INSERT INTO pedido (isAnulado, isEnviadoxMail, isCobrado, isFinalizado, idCliente, idVendedor, idTipoReglaComercial, idAbono, idTipoCondicionesDeVenta, num_interno, representante, cod, cuit, domicilio,telefono, transporte, observaciones,  fechaPedido, porcDescuentoGeneral, descripcion, nroRemito, subtotal, impuestos, subtotal2, ivaInscriptoPorc, ivaInscripto, total, fechaGraba, usuarioGraba ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ',
+    'INSERT INTO pedido (isAnulado, isEnviadoxMail, isCobrado, isFinalizado, idCliente, idVendedor, idTipoReglaComercial, idAbono, idTipoCondicionesDeVenta, num_interno, representante, codigo, cuit, domicilio,telefono, transporte, observaciones,  fechaPedido, porcDescuentoGeneral, descripcion, nroRemito, subtotal, impuestos, subtotal2, ivaInscriptoPorc, ivaInscripto, total, fechaGraba, usuarioGraba ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ',
     [
       isAnulado,
       isEnviadoxMail,
@@ -51,7 +51,7 @@ router.post('/crear', async (req, res, next) => {
       idTipoCondicionesDeVenta,
       num_interno,
       representante,
-      Number(cod),
+      Number(codigo),
       cuit,
       domicilio,
       telefono,
@@ -146,7 +146,7 @@ router.put('/:id', (req, res) => {
     idTipoCondicionesDeVenta,
     num_interno,
     representante,
-    cod,
+    codigo,
     cuit,
     domicilio,
     telefono,
@@ -166,7 +166,7 @@ router.put('/:id', (req, res) => {
   } = req.body;
   const fechaCambiada = new Date();
   conexion.query(
-    'UPDATE pedido SET isAnulado = ?, isEnviadoxMail = ?, isCobrado = ?, isFinalizado = ?, idCliente = ?, idVendedor = ?, idTipoReglaComercial = ?, idAbono = ?, idTipoCondicionesDeVenta = ?,  num_interno = ?, representante = ?, cod = ?, cuit = ?, domicilio = ? ,telefono = ?, transporte = ?, observaciones = ?,fechaPedido = ?, porcDescuentoGeneral = ?, descripcion = ?, nroRemito = ?, subtotal = ?, impuestos = ?, subtotal2 = ?, ivaInscriptoPorc = ?, ivaInscripto = ?, total = ?, fechaModifica = ?, usuarioModifica = ? WHERE idPedido = ?',
+    'UPDATE pedido SET isAnulado = ?, isEnviadoxMail = ?, isCobrado = ?, isFinalizado = ?, idCliente = ?, idVendedor = ?, idTipoReglaComercial = ?, idAbono = ?, idTipoCondicionesDeVenta = ?,  num_interno = ?, representante = ?, codigo = ?, cuit = ?, domicilio = ? ,telefono = ?, transporte = ?, observaciones = ?,fechaPedido = ?, porcDescuentoGeneral = ?, descripcion = ?, nroRemito = ?, subtotal = ?, impuestos = ?, subtotal2 = ?, ivaInscriptoPorc = ?, ivaInscripto = ?, total = ?, fechaModifica = ?, usuarioModifica = ? WHERE idPedido = ?',
     [
       isAnulado,
       isEnviadoxMail,
@@ -179,7 +179,7 @@ router.put('/:id', (req, res) => {
       idTipoCondicionesDeVenta,
       num_interno,
       representante,
-      cod,
+      codigo,
       cuit,
       domicilio,
       telefono,
@@ -208,7 +208,7 @@ router.put('/:id', (req, res) => {
             producto.cantidad = 1;
           }
           conexion.query(
-            'UPDATE INTO productos_por_pedido idProducto =? , idCategoria =? , cod =?, descripcion =? ,precio =? , cantidad =? , unidades_bulto =? , pallets =? , condicion =?, total =? , usuarioModifica =? , fechaModifica =? WHERE idPedido =?',
+            'UPDATE INTO productos_por_pedido idProducto =? , idCategoria =? , codigo =?, descripcion =? ,precio =? , cantidad =? , unidades_bulto =? , pallets =? , condicion =?, total =? , usuarioModifica =? , fechaModifica =? WHERE idPedido =?',
             [
               producto.idProducto,
               producto.idCategoria,
