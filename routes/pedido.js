@@ -3,11 +3,10 @@ const conexion = require('../database');
 const router = express.Router();
 const { format } = require('date-fns');
 
-
 router.post('/crear', async (req, res, next) => {
-  console.log(req.body)
-  console.log("asdfasdfasdfasdfasdfasdfasdfa");
-  const { 
+  console.log(req.body);
+  console.log('asdfasdfasdfasdfasdfasdfasdfa');
+  const {
     isAnulado,
     isEnviadoxMail,
     isCobrado,
@@ -35,7 +34,7 @@ router.post('/crear', async (req, res, next) => {
     ivaInscriptoPorc,
     ivaInscripto,
     total,
-    usuarioGraba,
+    usuarioGraba
   } = req.body.pedido;
   const fechaGraba = new Date();
   conexion.query(
@@ -69,7 +68,7 @@ router.post('/crear', async (req, res, next) => {
       ivaInscripto,
       total,
       fechaGraba,
-      usuarioGraba,
+      usuarioGraba
     ],
     (error, rows) => {
       if (error) {
@@ -82,7 +81,21 @@ router.post('/crear', async (req, res, next) => {
           }
           conexion.query(
             'INSERT INTO productos_por_pedido (idPedido, idProducto,idCategoria, codigo, descripcion, precio, cantidad, unidades_bulto, pallets, condicion, total, usuarioGraba, fechaGraba) VALUES (?, ?,?, ?,?,?,?,?,?,?,?,?,?);',
-            [rows.insertId, producto.id_producto, producto.categoria,producto.codigo, producto.descripcion, producto.precioReferencia, producto.cantidad, producto.unidadesFijasPallet, producto.porcRelacionPallet, producto.condicion, producto.total, usuarioGraba, fechaGraba],
+            [
+              rows.insertId,
+              producto.id_producto,
+              producto.categoria,
+              producto.codigo,
+              producto.descripcion,
+              producto.precioReferencia,
+              producto.cantidad,
+              producto.unidadesFijasPallet,
+              producto.porcRelacionPallet,
+              producto.condicion,
+              producto.total,
+              usuarioGraba,
+              fechaGraba
+            ],
             (error, rows) => {
               console.log(rows);
               if (error) {
@@ -92,26 +105,22 @@ router.post('/crear', async (req, res, next) => {
           );
         });
       }
-      res.json({ idVentaCreada: rows.insertId, Status: 200});
+      res.json({ idVentaCreada: rows.insertId, Status: 200 });
     }
   );
 });
 
 router.get('/:id', (req, res, next) => {
-    const { id } = req.params;
-    conexion.query(
-      'SELECT * FROM pedido WHERE idPedido = ?',
-      [id],
-      (err, rows, fields) => {
-        if (!err) {
-          res.json(rows);
-        } else {
-          console.log(err);
-        }
-      }
-    );
+  const { id } = req.params;
+  conexion.query('SELECT * FROM pedido WHERE idPedido = ?', [id], (err, rows, fields) => {
+    if (!err) {
+      res.json(rows);
+    } else {
+      console.log(err);
+    }
   });
-  
+});
+
 router.get('', (req, res, next) => {
   conexion.query('SELECT * FROM pedido ORDER BY idPedido DESC', (err, rows, fields) => {
     if (!err) {
@@ -124,8 +133,8 @@ router.get('', (req, res, next) => {
 
 router.put('/:id', (req, res) => {
   const { id } = req.params;
-  const idParseado = parseInt(id)
-  const { 
+  const idParseado = parseInt(id);
+  const {
     isAnulado,
     isEnviadoxMail,
     isCobrado,
@@ -198,9 +207,21 @@ router.put('/:id', (req, res) => {
           }
           conexion.query(
             'UPDATE INTO productos_por_pedido idProducto =? , idCategoria =? , codigo =?, descripcion =? ,precio =? , cantidad =? , unidades_bulto =? , pallets =? , condicion =?, total =? , usuarioModifica =? , fechaModifica =? WHERE idPedido =?',
-            [ producto.id_producto,producto.categoria, producto.cod, producto.descripcion, producto.precio, producto.cantidad, producto.unidades_bulto, producto.pallets, producto.condicion, usuarioModifica, fechaCambiada, rows.insertId],
+            [
+              producto.id_producto,
+              producto.categoria,
+              producto.cod,
+              producto.descripcion,
+              producto.precio,
+              producto.cantidad,
+              producto.unidades_bulto,
+              producto.pallets,
+              producto.condicion,
+              usuarioModifica,
+              fechaCambiada,
+              rows.insertId
+            ],
             (error, rows) => {
-              
               console.log(rows);
               if (error) {
                 console.log(error);
@@ -216,14 +237,14 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-    const { id } = req.params;
-    conexion.query('DELETE FROM pedido WHERE idPedido = ?', [id], (err, rows, fields) => {
-      if (!err) {
-        res.json({ Status: 'Pedido eliminado' });
-      } else {
-        console.log(err);
-      }
-    });
+  const { id } = req.params;
+  conexion.query('DELETE FROM pedido WHERE idPedido = ?', [id], (err, rows, fields) => {
+    if (!err) {
+      res.json({ Status: 'Pedido eliminado' });
+    } else {
+      console.log(err);
+    }
+  });
 });
 
 module.exports = router;
