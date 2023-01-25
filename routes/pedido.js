@@ -201,7 +201,7 @@ router.put('/:id', (req, res) => {
     ],
     (err, rows, fields) => {
       if (!err) {
-        print(req.body.productos)
+        console.log(req.body.productos);
         req.body.productos.forEach(producto => {
           if (!producto.cantidad) {
             producto.cantidad = 1;
