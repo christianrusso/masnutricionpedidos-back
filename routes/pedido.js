@@ -163,7 +163,7 @@ router.put('/:id', (req, res) => {
     ivaInscripto,
     total,
     usuarioModifica
-  } = req.body;
+  } = req.body.pedido;
   const fechaCambiada = new Date();
   conexion.query(
     'UPDATE pedido SET isAnulado = ?, isEnviadoxMail = ?, isCobrado = ?, isFinalizado = ?, idCliente = ?, idVendedor = ?, idTipoReglaComercial = ?, idAbono = ?, idTipoCondicionesDeVenta = ?,  num_interno = ?, representante = ?, codigo = ?, cuit = ?, domicilio = ? ,telefono = ?, transporte = ?, observaciones = ?,fechaPedido = ?, porcDescuentoGeneral = ?, descripcion = ?, nroRemito = ?, subtotal = ?, impuestos = ?, subtotal2 = ?, ivaInscriptoPorc = ?, ivaInscripto = ?, total = ?, fechaModifica = ?, usuarioModifica = ? WHERE idPedido = ?',
