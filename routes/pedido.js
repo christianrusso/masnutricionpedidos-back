@@ -220,7 +220,7 @@ router.put('/:id', (req, res) => {
               producto.pallets,
               producto.condicion,
               producto.total,
-              usuarioModifica,
+              producto.usuarioModifica,
               fechaCambiada,
               rows.insertId
             ],
