@@ -51,7 +51,7 @@ router.post('/crear', async (req, res, next) => {
       idTipoCondicionesDeVenta,
       num_interno,
       representante,
-      Number(codigo),
+      codigo,
       cuit,
       domicilio,
       telefono,
