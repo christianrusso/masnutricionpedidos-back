@@ -37,8 +37,9 @@ router.post('/crear', async (req, res, next) => {
     usuarioGraba
   } = req.body.pedido;
   const fechaGraba = new Date();
+  console.log( req.body.pedido);
   conexion.query(
-    'INSERT INTO pedido (isAnulado, isEnviadoxMail, isCobrado, isFinalizado, idCliente, idVendedor, idTipoReglaComercial, idAbono, idTipoCondicionesDeVenta, num_interno, representante, codigo, cuit, domicilio,telefono, transporte, observaciones,  fechaPedido, porcDescuentoGeneral, descripcion, nroRemito, subtotal, impuestos, subtotal2, ivaInscriptoPorc, ivaInscripto, total, fechaGraba, usuarioGraba ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ',
+    'INSERT INTO pedido (isAnulado, isEnviadoxMail, isCobrado, isFinalizado, idCliente, idVendedor, idTipoReglaComercial, idAbono, idTipoCondicionesDeVenta, num_interno, representante, codigo, cuit, domicilio, telefono, transporte, observaciones, fechaPedido, porcDescuentoGeneral, descripcion, nroRemito, subtotal, impuestos, subtotal2, ivaInscriptoPorc, ivaInscripto, total, fechaGraba, usuarioGraba) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); ',
     [
       isAnulado,
       isEnviadoxMail,
