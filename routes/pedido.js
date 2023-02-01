@@ -167,7 +167,7 @@ router.put('/:id', (req, res) => {
   } = req.body.pedido;
   const fechaCambiada = new Date();
   conexion.query(
-    'UPDATE pedido SET isAnulado = ?, isEnviadoxMail = ?, isCobrado = ?, isFinalizado = ?, idCliente = ?, idVendedor = ?, idTipoReglaComercial = ?, idAbono = ?, idTipoCondicionesDeVenta = ?,  num_interno = ?, representante = ?, codigo = ?, cuit = ?, domicilio = ? ,telefono = ?, transporte = ?, observaciones = ?,fechaPedido = ?, porcDescuentoGeneral = ?, descripcion = ?, nroRemito = ?, subtotal = ?, impuestos = ?, subtotal2 = ?, ivaInscriptoPorc = ?, ivaInscripto = ?, total = ?, fechaModifica = ?, usuarioModifica = ? WHERE idPedido = ?',
+    'UPDATE pedido SET isAnulado = ?, isEnviadoxMail = ?, isCobrado = ?, isFinalizado = ?, idCliente = ?, idVendedor = ?, idTipoReglaComercial = ?, idAbono = ?, idTipoCondicionesDeVenta = ?, num_interno = ?, representante = ?, codigo = ?, cuit = ?, domicilio = ?, telefono = ?, transporte = ?, observaciones = ?, fechaPedido = ?, porcDescuentoGeneral = ?, descripcion = ?, nroRemito = ?, subtotal = ?, impuestos = ?, subtotal2 = ?, ivaInscriptoPorc = ?, ivaInscripto = ?, total = ?, fechaCambiada = ?, usuarioModifica = ? WHERE idPedido = ?',
     [
       isAnulado,
       isEnviadoxMail,
@@ -198,7 +198,7 @@ router.put('/:id', (req, res) => {
       total,
       fechaCambiada,
       usuarioModifica,
-      idParseado
+      id
     ],
     (err, rows, fields) => {
       if (!err) {
