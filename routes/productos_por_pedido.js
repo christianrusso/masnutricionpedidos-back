@@ -111,6 +111,7 @@ router.delete('/:id', (req, res) => {
   const { id } = req.params;
   //id = idPedido
   const { idProducto, usuarioModifica } = req.body;
+  console.log(req.body);
   const fechaModifica = new Date();
   let totalProductoPorPedido;
   let totalPedido;
