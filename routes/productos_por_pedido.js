@@ -125,7 +125,9 @@ router.delete('/:id', (req, res) => {
         //aca obtenes el total del producto que queres eliminar
         // seria obtener el precio del producto * cantidad
         console.log("rows primer query");
-        console.log(rows["total"]);
+        rows.forEach(element => {
+          console.log(element);
+        });
         totalProductoPorPedido = rows["total"];
         //res.json(rows);
         //hay que cambiar el total del pedido,
