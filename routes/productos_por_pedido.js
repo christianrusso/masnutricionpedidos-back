@@ -110,8 +110,8 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
   //id = idPedido
-  const { idProducto, fechaModifica, usuarioModifica } = req.body;
-
+  const { idProducto, usuarioModifica } = req.body;
+  const fechaModifica = new Date();
   let totalProductoPorPedido;
   let totalPedido;
   //habria que obtener de alguna forma el fechaModifica y el usuarioModifica
