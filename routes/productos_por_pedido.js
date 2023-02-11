@@ -125,8 +125,8 @@ router.delete('/:id', (req, res) => {
         //aca obtenes el total del producto que queres eliminar
         // seria obtener el precio del producto * cantidad
         console.log("rows primer query");
-        console.log(rows);
-        totalProductoPorPedido = rows;
+        console.log(rows.total);
+        totalProductoPorPedido = rows.total;
         //res.json(rows);
         //hay que cambiar el total del pedido,
         //habria que restarle el total de ese prodcucto que se quiere eliminar
@@ -134,8 +134,8 @@ router.delete('/:id', (req, res) => {
           if (!err) {
             //res.json(rows);
             console.log("rows segunda query");
-            console.log(rows);
-            totalPedido = rows - totalProductoPorPedido;
+            console.log(rows.total);
+            totalPedido = rows.total - totalProductoPorPedido;
             // fechaModifica = ?, usuarioModifica = ?
             // fechaModifica, usuarioModifica,
             conexion.query(
