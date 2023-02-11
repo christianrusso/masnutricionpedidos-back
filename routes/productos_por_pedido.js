@@ -126,7 +126,7 @@ router.delete('/:id', (req, res) => {
         // seria obtener el precio del producto * cantidad
         console.log("rows primer query");
         rows.forEach(element => {
-          console.log(element);
+          console.log(element.total);
         });
         totalProductoPorPedido = rows["total"];
         //res.json(rows);
