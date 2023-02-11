@@ -3,7 +3,6 @@ const conexion = require('../database');
 const router = express.Router();
 const { format } = require('date-fns');
 
-
 router.post('/crear', async (req, res, next) => {
   console.log(req.body);
   const {
@@ -46,13 +45,17 @@ router.post('/crear', async (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
   const { id } = req.params;
-  conexion.query('SELECT * FROM productos_por_pedido WHERE idPedido = ?', [id], (err, rows, fields) => {
-    if (!err) {
-      res.json(rows);
-    } else {
-      console.log(err);
+  conexion.query(
+    'SELECT * FROM productos_por_pedido WHERE idPedido = ?',
+    [id],
+    (err, rows, fields) => {
+      if (!err) {
+        res.json(rows);
+      } else {
+        console.log(err);
+      }
     }
-  });
+  );
 });
 
 router.get('', (req, res, next) => {
@@ -106,16 +109,65 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-  const {
-    idProducto,
-  } = req.body;
-  conexion.query('DELETE FROM productos_por_pedido WHERE idPedido = ? AND idProducto = ?', [id, idProducto], (err, rows, fields) => {
-    if (!err) {
-      res.json({ Status: 'Producto por pedido eliminado' });
-    } else {
-      console.log(err);
+  //id = idPedido
+  const { idProducto } = req.body;
+
+  let totalProductoPorPedido;
+  let totalPedido;
+  //habria que obtener de alguna forma el fechaModifica y el usuarioModifica
+  // para que no tire error en la segunda query
+
+  conexion.query(
+    'SELECT total FROM productos_por_pedido WHERE idPedido = ? AND idProducto = ?',
+    [id, idProducto],
+    (err, rows, fields) => {
+      if (!err) {
+        //aca obtenes el total del producto que queres eliminar
+        // seria obtener el precio del producto * cantidad
+        console.log("rows primer query");
+        console.log(rows);
+        totalProductoPorPedido = rows;
+        //res.json(rows);
+        //hay que cambiar el total del pedido,
+        //habria que restarle el total de ese prodcucto que se quiere eliminar
+        conexion.query('SELECT total FROM pedido WHERE idPedido = ?', [id], (err, rows, fields) => {
+          if (!err) {
+            //res.json(rows);
+            console.log("rows segunda query");
+            console.log(rows);
+            totalPedido = rows - totalProductoPorPedido;
+            // fechaModifica = ?, usuarioModifica = ?
+            // fechaModifica, usuarioModifica,
+            conexion.query(
+              'UPDATE pedido SET total = ? WHERE idPedido = ?',
+              [totalPedido, id],
+              (err, rows, fields) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  conexion.query(
+                    'DELETE FROM productos_por_pedido WHERE idPedido = ? AND idProducto = ?',
+                    [id, idProducto],
+                    (err, rows, fields) => {
+                      if (!err) {
+                        res.json({ Status: 'Producto por pedido eliminado' });
+                      } else {
+                        console.log(err);
+                      }
+                    }
+                  );
+                }
+              }
+            );
+          } else {
+            console.log(err);
+          }
+        });
+      } else {
+        console.log(err);
+      }
     }
-  });
+  );
 });
 
 module.exports = router;
