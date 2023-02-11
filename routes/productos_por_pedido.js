@@ -110,7 +110,7 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
   //id = idPedido
-  const { idProducto } = req.body;
+  const { idProducto, fechaModifica, usuarioModifica } = req.body;
 
   let totalProductoPorPedido;
   let totalPedido;
@@ -124,31 +124,29 @@ router.delete('/:id', (req, res) => {
       if (!err) {
         //aca obtenes el total del producto que queres eliminar
         // seria obtener el precio del producto * cantidad
-        console.log("rows primer query");
+        console.log('rows primer query');
         rows.forEach(element => {
           totalProductoPorPedido = element.total;
         });
         console.log(totalProductoPorPedido);
-        //res.json(rows);
         //hay que cambiar el total del pedido,
         //habria que restarle el total de ese prodcucto que se quiere eliminar
         conexion.query('SELECT total FROM pedido WHERE idPedido = ?', [id], (err, rows, fields) => {
           if (!err) {
-            //res.json(rows);
-            console.log("rows segunda query");
+            console.log('rows segunda query');
             rows.forEach(element => {
-              totalPedido = element.total - totalProductoPorPedido;;
+              totalPedido = element.total - totalProductoPorPedido;
             });
             console.log(totalPedido);
-            // fechaModifica = ?, usuarioModifica = ?
-            // fechaModifica, usuarioModifica,
+            //actualizamos la tabla del pedido. Total del pedido original - total del producto eliminado
             conexion.query(
-              'UPDATE pedido SET total = ? WHERE idPedido = ?',
-              [totalPedido, id],
+              'UPDATE pedido SET total = ?, fechaModifica = ?, usuarioModifica = ? WHERE idPedido = ?',
+              [totalPedido, fechaModifica, usuarioModifica, id],
               (err, rows, fields) => {
                 if (err) {
                   console.log(err);
                 } else {
+                  //eliminamos de la tabla el producto del pedido
                   conexion.query(
                     'DELETE FROM productos_por_pedido WHERE idPedido = ? AND idProducto = ?',
                     [id, idProducto],
