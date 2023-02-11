@@ -222,7 +222,7 @@ router.put('/:id', (req, res) => {
               producto.condicion,
               producto.total,
               producto.usuarioModifica,
-              fechaCambiada,
+              fechaModifica,
               idParseado
             ],
             (error, rows) => {
