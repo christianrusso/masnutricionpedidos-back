@@ -166,6 +166,7 @@ router.put('/:id', (req, res) => {
     usuarioModifica
   } = req.body.pedido;
   const fechaModifica = new Date();
+  console.log("query modificar producto por pedido");
   conexion.query(
     'UPDATE pedido SET isAnulado = ?, isEnviadoxMail = ?, isCobrado = ?, isFinalizado = ?, idCliente = ?, idVendedor = ?, idTipoReglaComercial = ?, idAbono = ?, idTipoCondicionesDeVenta = ?, num_interno = ?, representante = ?, codigo = ?, cuit = ?, domicilio = ?, telefono = ?, transporte = ?, observaciones = ?, fechaPedido = ?, porcDescuentoGeneral = ?, descripcion = ?, nroRemito = ?, subtotal = ?, impuestos = ?, subtotal2 = ?, ivaInscriptoPorc = ?, ivaInscripto = ?, total = ?, fechaModifica = ?, usuarioModifica = ? WHERE idPedido = ?',
     [
