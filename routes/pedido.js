@@ -228,6 +228,7 @@ router.put('/:id', (req, res) => {
             ],
             (error, rows) => {
               console.log(rows);
+              res.json(rows);
               if (error) {
                 console.log(error);
               }
