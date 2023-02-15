@@ -84,10 +84,9 @@ router.put('/:id', (req, res) => {
   const fechaModifica = new Date();
   console.log("query modificar producto por pedido");
   conexion.query(
-    'UPDATE productos_por_pedido SET idPedido = ?, cantidad = ?, detalle = ?, porcDescuentoItem = ?, precioUnitario = ?, importe = ?, isEntregadoItem = ?, fechaModifica = ?, usuarioModifica = ? WHERE id = ?',
+    'UPDATE productos_por_pedido SET idPedido = ?, cantidad = ?, detalle = ?, porcDescuentoItem = ?, precioUnitario = ?, importe = ?, isEntregadoItem = ?, fechaModifica = ?, usuarioModifica = ? WHERE idPedido AND idCategoria = ?',
     [
       idPedido,
-      idCategoria,
       cantidad,
       detalle,
       porcDescuentoItem,
@@ -96,7 +95,8 @@ router.put('/:id', (req, res) => {
       isEntregadoItem,
       fechaModifica,
       usuarioModifica,
-      id
+      idPedido,
+      idCategoria
     ],
     (err, rows, fields) => {
       if (!err) {
